@@ -44,7 +44,14 @@ const main = async () => {
     //     await findOneListingByName(client, "pial");
 
     //Update one
-    await updateListingByName(client, "pial", { name: "rony" });
+    // await updateListingByName(client, "pial", { name: "rony" });
+    //UPSERT one
+    // await upsertListingByName(client, "imad", {
+    //   name: "imad",
+    //   city: "rangpur",
+    //   age: 50,
+    // });
+    await upsertListingByName(client, "rakib", { name: "raju" });
   } catch (e) {
     console.error(e);
   } finally {
@@ -113,4 +120,22 @@ const updateListingByName = async (
     .updateOne({ name: nameOfListing }, { $set: updateListingByName });
   console.log(`${result.matchedCount} document(s) matched the query criteria`);
   console.log(`${result.modifiedCount} documents was/were updated`);
+};
+
+//UPSERT if there is matched document it will update that or if there is no matched document it will create it
+const upsertListingByName = async (client, nameOfListing, updateListing) => {
+  const result = await client
+    .db("sourav")
+    .collection("majumder")
+    .updateOne(
+      { name: nameOfListing },
+      { $set: updateListing },
+      { upsert: true }
+    );
+  console.log(`${result.matchedCount} document(s) matched the query criteria`);
+  if (result.upsertedCount > 0) {
+    console.log(`One document was inserted with the id ${result.upsertedId}`);
+  } else {
+    console.log(`${result.modifiedCount} documents was/were updated`);
+  }
 };

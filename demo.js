@@ -51,7 +51,9 @@ const main = async () => {
     //   city: "rangpur",
     //   age: 50,
     // });
-    await upsertListingByName(client, "rakib", { name: "raju" });
+    // await upsertListingByName(client, "rakib", { name: "raju" });
+    //UPDATE MANY
+    await updateAllListingToHavePropertyType(client);
   } catch (e) {
     console.error(e);
   } finally {
@@ -138,4 +140,17 @@ const upsertListingByName = async (client, nameOfListing, updateListing) => {
   } else {
     console.log(`${result.modifiedCount} documents was/were updated`);
   }
+};
+
+const updateAllListingToHavePropertyType = async (client) => {
+  const result = await client
+    .db("sourav")
+    .collection("majumder")
+    .updateMany(
+      { education_status: { $exists: false } },
+      { $set: { education_status: "educated" } }
+    );
+
+  console.log(`${result.matchedCountn} documents matched the query criteria`);
+  console.log(`${result.modifiedCount} documents was/were updated`);
 };

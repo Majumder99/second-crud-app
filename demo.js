@@ -22,23 +22,26 @@ const main = async () => {
     // });
 
     //insert mulitple datas
-    await createMultipleListing(client, [
-      {
-        name: "mahim",
-        age: 20,
-        city: "mirpur",
-      },
-      {
-        name: "zafrul",
-        age: 22,
-        city: "bogra",
-      },
-      {
-        name: "pial",
-        age: 23,
-        city: "dinajpur",
-      },
-    ]);
+    // await createMultipleListing(client, [
+    //   {
+    //     name: "mahim",
+    //     age: 20,
+    //     city: "mirpur",
+    //   },
+    //   {
+    //     name: "zafrul",
+    //     age: 22,
+    //     city: "bogra",
+    //   },
+    //   {
+    //     name: "pial",
+    //     age: 23,
+    //     city: "dinajpur",
+    //   },
+    // ]);
+
+    //find one data
+    await findOneListingByName(client, "pial");
   } catch (e) {
     console.error(e);
   } finally {
@@ -50,6 +53,15 @@ const main = async () => {
 
 main().catch(console.error);
 
+const listDatabases = async (client) => {
+  const dataBaseslist = await client.db().admin().listDatabases(); //show all databases
+  console.log("Databases");
+  dataBaseslist.databases.forEach((db) => {
+    console.log(`-${db.name}`);
+  });
+};
+
+//CREATE
 const createListing = async (client, newListing) => {
   const result = await client
     .db("sourav")
@@ -69,10 +81,19 @@ const createMultipleListing = async (client, newListings) => {
   console.log(result.insertedIds);
 };
 
-const listDatabases = async (client) => {
-  const dataBaseslist = await client.db().admin().listDatabases(); //show all databases
-  console.log("Databases");
-  dataBaseslist.databases.forEach((db) => {
-    console.log(`-${db.name}`);
-  });
+//READ
+const findOneListingByName = async (client, nameOfListing) => {
+  const result = await client
+    .db("sourav")
+    .collection("majumder")
+    .findOne({ name: nameOfListing });
+
+  if (result) {
+    console.log(
+      `Found a listing in the collection with the name '${nameOfListing}'`
+    );
+    console.log(result);
+  } else {
+    console.log(`No listin found with the name of '${nameOfListing}'`);
+  }
 };

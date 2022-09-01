@@ -13,12 +13,32 @@ const main = async () => {
     await client.connect();
     // await listDatabases(client);
     //to insert one data
-    createListing(client, {
-      item: "jetshoes",
-      price: 500,
-      quantity: 50,
-      date: "2020-22-09",
-    });
+
+    // createListing(client, {
+    //   item: "jetshoes",
+    //   price: 500,
+    //   quantity: 50,
+    //   date: "2020-22-09",
+    // });
+
+    //insert mulitple datas
+    await createMultipleListing(client, [
+      {
+        name: "mahim",
+        age: 20,
+        city: "mirpur",
+      },
+      {
+        name: "zafrul",
+        age: 22,
+        city: "bogra",
+      },
+      {
+        name: "pial",
+        age: 23,
+        city: "dinajpur",
+      },
+    ]);
   } catch (e) {
     console.error(e);
   } finally {

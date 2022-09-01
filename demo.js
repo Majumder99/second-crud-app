@@ -41,7 +41,10 @@ const main = async () => {
     // ]);
 
     //find one data
-    await findOneListingByName(client, "pial");
+    //     await findOneListingByName(client, "pial");
+
+    //Update one
+    await updateListingByName(client, "pial", { name: "rony" });
   } catch (e) {
     console.error(e);
   } finally {
@@ -96,4 +99,18 @@ const findOneListingByName = async (client, nameOfListing) => {
   } else {
     console.log(`No listin found with the name of '${nameOfListing}'`);
   }
+};
+
+//UPDATE
+const updateListingByName = async (
+  client,
+  nameOfListing,
+  updateListingByName
+) => {
+  const result = await client
+    .db("sourav")
+    .collection("majumder")
+    .updateOne({ name: nameOfListing }, { $set: updateListingByName });
+  console.log(`${result.matchedCount} document(s) matched the query criteria`);
+  console.log(`${result.modifiedCount} documents was/were updated`);
 };

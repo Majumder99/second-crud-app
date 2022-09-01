@@ -53,7 +53,10 @@ const main = async () => {
     // });
     // await upsertListingByName(client, "rakib", { name: "raju" });
     //UPDATE MANY
-    await updateAllListingToHavePropertyType(client);
+    // await updateAllListingToHavePropertyType(client);
+    //DELETE
+    // await deleteListingByName(client, "mahim");
+    await deleteListingsByName(client, "dinajpur");
   } catch (e) {
     console.error(e);
   } finally {
@@ -153,4 +156,23 @@ const updateAllListingToHavePropertyType = async (client) => {
 
   console.log(`${result.matchedCountn} documents matched the query criteria`);
   console.log(`${result.modifiedCount} documents was/were updated`);
+};
+
+//DELETE
+const deleteListingByName = async (client, nameOfListing) => {
+  const result = await client
+    .db("sourav")
+    .collection("majumder")
+    .deleteOne({ name: nameOfListing });
+
+  console.log(`${result.deletedCount} documents was/were deleted`);
+};
+
+const deleteListingsByName = async (client, nameOfListing) => {
+  const result = await client
+    .db("sourav")
+    .collection("majumder")
+    .deleteMany({ city: nameOfListing });
+
+  console.log(`${result.deletedCount} documents was/were deleted`);
 };
